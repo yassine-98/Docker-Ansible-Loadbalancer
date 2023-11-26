@@ -1,0 +1,24 @@
+# Utilisez l'image Debian comme base
+FROM debian:latest
+
+# Mise à jour du système et installation d'OpenSSH Server et d'autres utilitaires
+RUN apt-get update && apt-get install -y openssh-server iputils-ping nano vim python3 iproute2 curl
+
+# Créez un répertoire pour les clés SSH
+RUN mkdir /var/run/sshd
+
+#chnager password pour root
+RUN echo 'root:root' | chpasswd
+
+# permttre la connexion ssh en root
+RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+
+# Autorisez l'accès SSH
+EXPOSE 22
+
+# Set the user for the following commands
+USER root
+
+# Point d'entrée : démarrez SSH
+CMD ["/usr/sbin/sshd", "-D"]
+

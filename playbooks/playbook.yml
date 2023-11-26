@@ -1,0 +1,43 @@
+---
+
+- name: Main playbook
+  hosts: all
+  become: true
+  tasks:
+
+  -  name: update apt 
+     apt: 
+       update_cache: yes     
+
+  -  name: installation nginx
+     apt:
+       name: 
+         - nginx   
+       state: present
+
+  -  name: demarrage du serveur nginx
+     service:
+       name: nginx
+       state: started
+
+  -  name: ajoute index jinja page
+     template: 
+         src: /mnt/c/Users/rajox/Desktop/castelis_Yassine/terra/docker/docker_lb_ansible/templates/index.html.j2   
+         dest: /var/www/html/index.nginx-debian.html
+     when: "'webservers' in group_names"   
+     notify: restart nginx server 
+    
+
+  -  name: ajout du nouveau fichier de configuration nginx
+     copy: 
+         src: /mnt/c/Users/rajox/Desktop/castelis_Yassine/terra/docker/docker_lb_ansible/load_balancer/nginx.conf  
+         dest:  /etc/nginx/nginx.conf
+     when: "'lb' in group_names"           
+     notify: restart nginx server 
+
+  handlers:
+       - name: restart nginx server
+         service:
+           name: nginx 
+           state: restarted
+  
