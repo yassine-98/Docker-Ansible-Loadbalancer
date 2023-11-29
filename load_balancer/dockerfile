@@ -19,7 +19,7 @@ EXPOSE 22
 # Set the user for the following commands
 USER root
 
-# Point d'entrée : démarrez SSH
+# Point d'entrée : démarrez SSH 
 CMD ["/usr/sbin/sshd", "-D"]
 
 
