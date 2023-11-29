@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+    
+  web:
+    image: remote_ansible
+    build:
+      context: .
+      dockerfile: ./remote_ansible/dockerfile
+    scale: 2
+
+
+  lb:
+    image: remote_ansible
+    build:
+      context: .
+      dockerfile: ./remote_ansible/dockerfile
+    ports:
+      - 80:80
+
+  master:
+    image: master_ansible
+    build:
+      context: .
+      dockerfile: ./master_ansible/dockerfile
+    volumes:
+      - ./master_ansible/ansible.cfg:/etc/ansible/ansible.cfg  
+      - ./master_ansible/hosts:/etc/ansible/hosts 
+      - ./master_ansible/playbooks:/etc/ansible/playbooks 
+      - ./master_ansible/templates:/etc/ansible/templates 
+      - ./master_ansible/nginx.conf:/etc/ansible/nginx.conf 
+    working_dir: /etc/ansible/
+
+
+ 
