@@ -3,26 +3,38 @@ version: '3'
 services:
     
   web:
+
     image: remote_ansible
     build:
       context: .
       dockerfile: ./remote_ansible/dockerfile
+    # container_name: rm {{}}
     scale: 2
+    network_mode: bridge
 
+             
 
   lb:
+
     image: remote_ansible
     build:
       context: .
       dockerfile: ./remote_ansible/dockerfile
+    container_name: lb
     ports:
-      - 80:80
+      - 80:80  
+    network_mode: bridge
+    depends_on:
+      - web
+
 
   master:
+
     image: master_ansible
     build:
       context: .
       dockerfile: ./master_ansible/dockerfile
+    container_name: ms
     volumes:
       - ./master_ansible/ansible.cfg:/etc/ansible/ansible.cfg  
       - ./master_ansible/hosts:/etc/ansible/hosts 
@@ -30,6 +42,9 @@ services:
       - ./master_ansible/templates:/etc/ansible/templates 
       - ./master_ansible/nginx.conf:/etc/ansible/nginx.conf 
     working_dir: /etc/ansible/
+    network_mode: bridge
+    depends_on:
+      - lb
 
 
- 
+

@@ -1,1 +1,12 @@
-The purpose of this project is to set an nginx load balancer with ansible inside docker containers   
+The purpose of this project is to set up an Nginx load balancer server with Ansible inside Docker containers.
+
+command to exceute :
+
+1- Build services : docker-compose up -d
+2- Execute ansible playbook inside the master container : docker-compose exec master ansible-playbook /etc/ansible/playbooks/playbook.yml
+3- Run Curl command from the machine that you map it with the lb container : curl locaalhost or curl "lb_ip_address"(172.17.0.4)
+
+
+
+
+
