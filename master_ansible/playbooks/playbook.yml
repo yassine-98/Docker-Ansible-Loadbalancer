@@ -30,7 +30,7 @@
 
   -  name: ajout du nouveau fichier de configuration nginx
      copy: 
-         src: /etc/ansible/playbooks/nginx.conf  
+         src: /etc/ansible/nginx.conf  
          dest:  /etc/nginx/nginx.conf
      when: "'lb' in group_names"           
      notify: restart nginx server 
